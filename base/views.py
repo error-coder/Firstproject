@@ -15,6 +15,7 @@ class CustomLoginView(LoginView):
     template_name = 'base/login.html'
     fields = '__all__'
     redirect_authenticated_user = True
+    next_page = 'tasks'
 
     def get_success_url(self):
         return reverse_lazy('tasks')
@@ -41,10 +42,6 @@ class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
 
-    '''def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.filter(user=self.request.user)'''
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tasks'] = context['tasks'].filter(user=self.request.user)
@@ -52,7 +49,7 @@ class TaskList(LoginRequiredMixin, ListView):
 
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
-            context['tasks'] = context['tasks'].filter(title__contains=search_input)
+            context['tasks'] = context['tasks'].filter(title__icontains=search_input)
 
         context['search_input'] = search_input
         return context
@@ -76,7 +73,7 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     fields = ['title', 'description', 'complete']
     success_url = reverse_lazy('tasks')
 
-class DeleteView(LoginRequiredMixin, DeleteView):
+class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
