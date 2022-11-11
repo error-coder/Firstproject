@@ -44,7 +44,8 @@ class TaskList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tasks'] = context['tasks'].filter(user=self.request.user)
+        context['tasks'] = self.get_queryset()
+        # context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = self.model.objects.filter(complete=False).count()
 
         search_input = self.request.GET.get('search-area') or ''
@@ -78,6 +79,6 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
 
-    def get_queryset(self):
+    def get_queryset(self, request, *args, **kwargs):
         owner = self.request.user
-        return self.model.objects.filter(user=owner)
+        return TaskDelete.objects.filter(user=owner)
