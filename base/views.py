@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
+
 from .models import Task
 
 class CustomLoginView(LoginView):
@@ -18,6 +19,7 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('tasks')
+
 
 class RegisterPage(FormView):
     template_name = 'base/register.html'
