@@ -28,7 +28,7 @@
 
 <div id="tasklist" class="task-items-wrapper">
     {% for task in tasks %}
-    <div class="task-wrapper" data-position="{{task.pk}}">
+        <div class="task-wrapper" data-position="{{task.pk}}">
         <div class="task-title">
             {% if task.complete %}
             <div class="task-complete-icon"></div>
